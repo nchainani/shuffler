@@ -6,7 +6,7 @@ module Shuffler
   # Person 1 owes Person 2 => 30$
   # Person 3 owes Person 1 => 20$
   # Person 4 owes Person 1 => 10$
-  #
+  # 
   # Person 1 will use debt shuffler to shuffle debts between Person 2, 3, 4.
   # The output will be
   # Person 1 owes 0$ to anyone.
