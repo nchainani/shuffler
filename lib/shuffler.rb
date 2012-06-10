@@ -5,6 +5,6 @@ module Shuffler
   # Your code goes here...
   
   def self.shuffle(objects, method = :debt)
-    Shuffler::Worker.new(objects, method).shuffle
+    Shuffler::DebtShuffler.new(objects, method).shuffle
   end
 end
