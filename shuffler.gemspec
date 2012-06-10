@@ -14,4 +14,7 @@ Gem::Specification.new do |gem|
   gem.name          = "shuffler"
   gem.require_paths = ["lib"]
   gem.version       = Shuffler::VERSION
+
+
+  gem.add_development_dependency('rspec')
 end

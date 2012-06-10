@@ -1,7 +1,7 @@
 require "shuffler/version"
 
 module Shuffler
-  require 'shuffler/worker'
+  require 'shuffler/debt_shuffler'
   # Your code goes here...
   
   def self.shuffle(objects, method = :debt)

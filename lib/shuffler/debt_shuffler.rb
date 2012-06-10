@@ -51,7 +51,7 @@ module Shuffler
     def second_pass
       return if !another_pass_required?
       @debt_map.each_pair do |obj, data|
-        if data[:owed] < 0 && data[:owed].abs < total_available
+        if data[:owed] < 0 && data[:owed].abs <= total_available
           @debt_map.each_pair do |inner_obj, inner_data|
             break if data[:owed] == 0
             if inner_data[:owed] > 0
