@@ -41,7 +41,7 @@ module Shuffler
     #   object_to => {
     #     owed        => new_amount,
     #     adjustments => [
-    #     # # implies object_2 will have to collect $20 from object_1
+    #     # # implies object_2 will have to pay $20 to object_1
     #       to   => object_1,
     #       amount => 20
     #     ] 
