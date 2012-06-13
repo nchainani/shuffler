@@ -4,8 +4,8 @@ require File.expand_path('../lib/shuffler/version', __FILE__)
 Gem::Specification.new do |gem|
   gem.authors       = ["Naren Chainani"]
   gem.email         = ["naren.chainani@gmail.com"]
-  gem.description   = %q{Shuffle debt to write minimum number of checks}
-  gem.summary       = %q{Shuffles debt such that you have write minimum number of checks. See the specs.}
+  gem.description   = %q{Shuffle debt to write fewer number of checks}
+  gem.summary       = %q{See the specs.}
   gem.homepage      = ""
 
   gem.files         = `git ls-files`.split($\)
