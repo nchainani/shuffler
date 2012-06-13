@@ -13,6 +13,9 @@ module Shuffler
   # Person 2 will get $20 from Person 3 and $10 from Person 4
   # 
   class DebtShuffler
+    # Two parameters
+    # 1) objects - Array - Each element in this array corresponds to an entity you owe money to or have to collect money from
+    # 2) method - Symbol - The method to call on the entity to get the amount owed/ to collect. Owed amounts should be positive
     def initialize(objects, method)
       @objects = objects
       @debt_map = {}
@@ -25,6 +28,25 @@ module Shuffler
       end
     end
 
+    # Response is a hash
+    # {
+    #   object_1 => {
+    #     owed        => new_amount,
+    #     adjustments => [
+    #       # implies object_1 will have to collect $20 from object_2
+    #       from   => object_2,
+    #       amount => 20
+    #     ] 
+    #   }
+    #   object_to => {
+    #     owed        => new_amount,
+    #     adjustments => [
+    #     # # implies object_2 will have to collect $20 from object_1
+    #       to   => object_1,
+    #       amount => 20
+    #     ] 
+    #   }
+    # }
     def shuffle
       first_pass
       second_pass
