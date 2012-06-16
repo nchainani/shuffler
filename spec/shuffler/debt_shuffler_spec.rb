@@ -55,4 +55,20 @@ describe Shuffler::DebtShuffler do
       output[person][:owed].should == person.debt
     end
   end
+
+  it "second pass should use minimum number of positives" do
+    p1 = Person.new(10)
+    p2 = Person.new(5)
+    p3 = Person.new(3)
+    p4 = Person.new(3)
+    p5 = Person.new(3)
+    p6 = Person.new(24)
+    p7 = Person.new(-25)
+
+    output = Shuffler.shuffle([p1, p2, p3, p4, p5, p6, p7], :debt)
+
+    [p1, p2, p3, p4, p5, p6, p7].each_with_index do |person, index|
+      output[person][:owed].should == [9, 5, 3, 3, 3, 0, 0][index]
+    end
+  end
 end

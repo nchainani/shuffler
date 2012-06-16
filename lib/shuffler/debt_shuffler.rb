@@ -72,6 +72,8 @@ module Shuffler
     # the debt across multiple objects.
     def second_pass
       return if !another_pass_required?
+      # Doing a descending sort makes sure we have least number of positives used
+      sort_descending!
       @debt_map.each_pair do |obj, data|
         if data[:owed] < 0 && data[:owed].abs <= total_available
           @debt_map.each_pair do |inner_obj, inner_data|
@@ -89,7 +91,6 @@ module Shuffler
       debt_array.inject(0) {|sum, value| sum += (value > 0 ? value : 0) }
     end
 
-    
     def first_greater(debt)
       debt = debt.abs
       @debt_map.each_pair do |obj, data|
@@ -118,6 +119,18 @@ module Shuffler
     # Determines whether we need one more pass or whether we have adjusted it all
     def another_pass_required?
       debt_array.min < 0
+    end
+
+    def sort_descending!
+      @debt_map = array_to_hash(@debt_map.sort_by{|obj, data| -1 * data[:owed]})
+    end
+
+    def array_to_hash(array)
+      hash = {}
+      array.map do |element|
+        hash[element[0]] = element[1]
+      end
+      hash
     end
 
     # Returns the debts in an array
