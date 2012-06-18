@@ -121,8 +121,14 @@ module Shuffler
       debt_array.min < 0
     end
 
+    # Returns the debts in an array
+    def debt_array
+      @debt_map.map {|obj, data| data[:owed]}
+    end
+
     def sort_descending!
-      @debt_map = array_to_hash(@debt_map.sort_by{|obj, data| -1 * data[:owed]})
+      #@debt_map = array_to_hash(@debt_map.sort_by{|obj, data| data[:owed] <= 0 ? data[:owed] : (-1 * data[:owed])})
+      @debt_map = array_to_hash(@debt_map.sort_by{|obj, data| -1 * data[:owed] })
     end
 
     def array_to_hash(array)
@@ -131,11 +137,6 @@ module Shuffler
         hash[element[0]] = element[1]
       end
       hash
-    end
-
-    # Returns the debts in an array
-    def debt_array
-      debt = @debt_map.map {|obj, data| data[:owed]}
     end
   end
 end
