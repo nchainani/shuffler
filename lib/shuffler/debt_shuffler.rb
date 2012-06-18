@@ -11,7 +11,8 @@ module Shuffler
   # The output will be
   # Person 1 owes 0$ to anyone.
   # Person 2 will get $20 from Person 3 and $10 from Person 4
-  # 
+  #
+  require 'shuffler/transfers'
   class DebtShuffler
     # Two parameters
     # 1) objects - Array - Each element in this array corresponds to an entity you owe money to or have to collect money from
@@ -26,6 +27,7 @@ module Shuffler
           adjustments: []
         }
       end
+      @transfers = Shuffler::Transfers.new
     end
 
     # Response is a hash
@@ -38,7 +40,7 @@ module Shuffler
     #       amount => 20
     #     ] 
     #   }
-    #   object_to => {
+    #   object_2 => {
     #     owed        => new_amount,
     #     adjustments => [
     #     # # implies object_2 will have to pay $20 to object_1
@@ -50,7 +52,7 @@ module Shuffler
     def shuffle
       first_pass
       second_pass
-      @debt_map
+      @transfers
     end
 
     private
@@ -75,7 +77,7 @@ module Shuffler
       # Doing a descending sort makes sure we have least number of positives used
       sort_descending!
       @debt_map.each_pair do |obj, data|
-        if data[:owed] < 0 && data[:owed].abs <= total_available
+        if data[:owed] < 0 && total_available > 0
           @debt_map.each_pair do |inner_obj, inner_data|
             break if data[:owed] == 0
             if inner_data[:owed] > 0
@@ -114,6 +116,7 @@ module Shuffler
         amount: amount
       })
       @debt_map[to][:owed] += amount
+      @transfers.push({from: from, to: to, amount: amount})
     end
 
     # Determines whether we need one more pass or whether we have adjusted it all

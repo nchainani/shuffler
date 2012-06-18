@@ -17,7 +17,7 @@ describe Shuffler::DebtShuffler do
     output = Shuffler.shuffle([p1, p2, p3], :debt)
 
     [p1, p2, p3].each do |person|
-      output[person][:owed].should == person.debt
+      output.amount_transferred(person).should == 0
     end
   end
 
@@ -28,7 +28,7 @@ describe Shuffler::DebtShuffler do
     output = Shuffler.shuffle([p1, p2, p3], :debt)
 
     [p1, p2, p3].each_with_index do |person, index|
-      output[person][:owed].should == [10, 0, 0][index]
+      output.amount_transferred(person).should == [-90, 70, 20][index]
     end
   end
 
@@ -39,8 +39,8 @@ describe Shuffler::DebtShuffler do
     p4 = Person.new(20)
     p5 = Person.new(-50)
     output = Shuffler.shuffle([p1, p2, p3, p4, p5], :debt)
-    [p1, p2, p3].each_with_index do |person, index|
-      output[person][:owed].should == 0
+    [p1, p2, p3, p4, p5].each_with_index do |person, index|
+      output.amount_transferred(person).should == [-5, -10, -15, -20, 50][index]
     end
   end
 
@@ -51,8 +51,20 @@ describe Shuffler::DebtShuffler do
     p4 = Person.new(0)
     output = Shuffler.shuffle([p1, p2, p3, p4], :debt)
 
-    [p1, p2, p3].each_with_index do |person, index|
-      output[person][:owed].should == person.debt
+    [p1, p2, p3, p4].each_with_index do |person, index|
+      output.amount_transferred(person).should == 0
+    end
+  end
+
+  it "distributes negatives as far as possible" do
+    p1 = Person.new(5)
+    p2 = Person.new(5)
+    p3 = Person.new(5)
+    p4 = Person.new(5)
+    p5 = Person.new(-25)
+    output = Shuffler.shuffle([p1, p2, p3, p4, p5], :debt)
+    [p1, p2, p3, p4, p5].each_with_index do |person, index|
+      output.amount_transferred(person).should == [-5, -5, -5, -5, 20][index]
     end
   end
 
@@ -68,7 +80,7 @@ describe Shuffler::DebtShuffler do
     output = Shuffler.shuffle([p1, p2, p3, p4, p5, p6, p7], :debt)
 
     [p1, p2, p3, p4, p5, p6, p7].each_with_index do |person, index|
-      output[person][:owed].should == [9, 5, 3, 3, 3, 0, 0][index]
+      output.amount_transferred(person).should == [-1, 0, 0, 0, 0, -24, 25][index]
     end
   end
 end
